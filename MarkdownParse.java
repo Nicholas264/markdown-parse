@@ -9,7 +9,7 @@ import java.util.regex.*;
 public class MarkdownParse {
 	public static ArrayList<String> getLinks(String markdown) {
 		ArrayList<String> toReturn = new ArrayList<>();
-		Pattern p = Pattern.compile("\\[([^\\]]*)]\\(([^)]+)\\)");
+		Pattern p = Pattern.compile("[^!]\\[([^\\]]*)]\\(([^)]+)\\)");
 		Matcher m = p.matcher(markdown);
 		while (m.find()) {
 			toReturn.add(m.group(1));
