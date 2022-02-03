@@ -13,14 +13,16 @@ public class MarkdownParseTest {
 			new ArrayList<>(),
 			new ArrayList<>(),
 			new ArrayList<>(Arrays.asList("a link!", "https://something.com", "another link!", "some-page.html")),
-			new ArrayList<>(Arrays.asList("link__**", "sdf"))
+			new ArrayList<>(Arrays.asList("link__**", "sdf")),
+			new ArrayList<>(Arrays.asList("validLInk", "linkurl"))
 		));
 		String[] files = new String[]{
 			"empty-file.md",
 			"empty-link.md",
 			"image-file.md",
 			"test-file.md",
-			"hell.md"
+			"hell.md",
+			"link-at-beginning.md"
 		};
 		for (int i = 0; i < files.length; i++) {
 			System.out.println("Testing file " + files[i]);
