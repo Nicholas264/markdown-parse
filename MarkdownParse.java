@@ -4,7 +4,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.regex.*;
-
+import java.util.Map;
+import java.util.*;
+import java.io.File;
 
 public class MarkdownParse {
 	public static ArrayList<String> getLinks(String markdown) {
@@ -14,10 +16,30 @@ public class MarkdownParse {
 		Matcher m = p.matcher(md);
 		while (m.find()) {
 			toReturn.add(m.group(1));
-			toReturn.add(m.group(2));
+			//toReturn.add(m.group(2));
 		}
 		return toReturn;
 	}
+
+	public static Map<String, List<String>> getLinks(File dirOrFile) throws IOException {
+        Map<String, List<String>> result = new HashMap<>();
+        if(dirOrFile.isDirectory()) {
+            for(File f: dirOrFile.listFiles()) {
+                result.putAll(getLinks(f));
+            }
+            return result;
+        }
+        else {
+            Path p = dirOrFile.toPath();
+            int lastDot = p.toString().lastIndexOf(".");
+            if(lastDot == -1 || !p.toString().substring(lastDot).equals(".md")) {
+                return result;
+            }
+            ArrayList<String> links = getLinks(Files.readString(p));
+            result.put(dirOrFile.getPath(), links);
+            return result;
+        }
+    }
 	// This isn't a perfect method (far from it) and it only works in basic circumstances
 	// parsing markdown rules is quite difficult
 	public static String removeCode(String markdown) {
@@ -35,9 +57,10 @@ public class MarkdownParse {
 		return fin;
 	}
 	public static void main(String[] args) throws IOException {
-		Path fileName = Path.of(args[0]);
+		File input = new File(args[0]);
+		/*Path fileName = Path.of(args[0]);
 		String contents = Files.readString(fileName);
-		ArrayList<String> links = getLinks(contents);
-		System.out.println(links);
+		ArrayList<String> links = getLinks(contents);*/
+		System.out.println(getLinks(input));
 	}
 }
